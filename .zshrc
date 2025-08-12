@@ -101,14 +101,6 @@ source $ZSH/oh-my-zsh.sh
 # - $ZSH_CUSTOM/macos.zsh
 # For a full list of active aliases, run `alias`.
 #
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-alias ipy="python3 -mIPython"
-alias e="explorer.exe ."
-alias t="clear && task"
-alias c="code ."
-alias tt="taskwarrior-tui"
 
 tp(){
 	clear
