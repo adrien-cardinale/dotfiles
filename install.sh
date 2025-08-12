@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script d'installation de Zsh, Oh My Zsh et alias personnalisés
+# Script d'installation de Zsh, Oh My Zsh, alias et remplacement du .zshrc
 
 # === 1. Installation de Zsh ===
 if ! command -v zsh &> /dev/null; then
@@ -36,23 +36,33 @@ else
     echo "✅ Oh My Zsh déjà installé."
 fi
 
-# === 4. Création automatique du fichier d'alias ===
-CUSTOM_ALIAS_FILE="$HOME/.oh-my-zsh/custom/aliases.zsh"
+# === 4. Remplacement du .zshrc par celui du dossier courant ===
+if [ -f "./.zshrc" ]; then
+    echo "⏳ Sauvegarde de l'ancien .zshrc (si présent)"
+    if [ -f "$HOME/.zshrc" ]; then
+        mv "$HOME/.zshrc" "$HOME/.zshrc.backup.$(date +%Y%m%d%H%M%S)"
+    fi
+    echo "⏳ Copie du nouveau .zshrc"
+    cp "./.zshrc" "$HOME/.zshrc"
+    echo "✅ Nouveau .zshrc installé."
+else
+    echo "⚠ Aucun fichier .zshrc trouvé dans le dossier courant, remplacement ignoré."
+fi
 
+# === 5. Création / mise à jour du fichier d'alias ===
+CUSTOM_ALIAS_FILE="$HOME/.oh-my-zsh/custom/aliases.zsh"
 echo "⏳ Création / mise à jour des alias..."
 mkdir -p "$(dirname "$CUSTOM_ALIAS_FILE")"
 
 cat > "$CUSTOM_ALIAS_FILE" << 'EOL'
 # Alias personnalisés
-alias ipy="python3 -mIPython"
-alias e="explorer.exe ."
-alias t="clear && task"
-alias c="code ."
-alias tt="taskwarrior-tui"
+alias ll='ls -lah'
+alias gs='git status'
+alias gp='git pull'
+alias up='cd ..'
 EOL
-
 echo "✅ Alias ajoutés dans $CUSTOM_ALIAS_FILE"
 
-# === 5. Fin ===
+# === 6. Fin ===
 echo "🎉 Installation terminée."
 echo "➡ Ouvrez un nouveau terminal ou exécutez : source ~/.zshrc"
